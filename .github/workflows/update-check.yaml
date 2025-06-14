@@ -1,0 +1,37 @@
+name: Update Check
+
+on:
+  schedule:
+    - cron:  '24 5 * * *'
+
+jobs:
+
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check if update available
+        id: check
+        uses: lucacome/docker-image-update-checker@v2
+        with:
+          base-image: ghcr.io/linuxserver/swag:latest
+          image: ghcr.io/jgigantino31/swag:latest
+          platforms: linux/amd64
+      - name: Invoke build workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: build-packages.yaml
+        if: steps.check.outputs.needs-updating == 'true'
+
+  keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Keep alive
+        uses: liskin/gh-workflow-keepalive@v1
