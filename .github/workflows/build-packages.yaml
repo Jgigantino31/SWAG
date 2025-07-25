@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Set environment variables
         run: |
-          SWAG_VERSION=$(curl -s 'https://api.linuxserver.io/api/v1/images?include_config=false&include_deprecated=false' | jq -r '.data.repositories.linuxserver | .[] | select(.name == "swag") | .version'
+          SWAG_VERSION=$(curl -s 'https://api.linuxserver.io/api/v1/images?include_config=false&include_deprecated=false' | jq -r '.data.repositories.linuxserver | .[] | select(.name == "swag") | .version')
           echo "SWAG_VERSION=$SWAG_VERSION" >> $GITHUB_ENV
           echo "DATE=$(date +%Y-%m-%d)" >> $GITHUB_ENV
       - name: Checkout repository
