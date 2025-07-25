@@ -13,6 +13,10 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Set environment variables
+        run: |
+          echo "SWAG_VERSION=$(curl -s 'https://api.linuxserver.io/api/v1/images?include_config=false&include_deprecated=false' | jq -r '.data.repositories.linuxserver | .[] | select(.name == "swag") | .version' >> $GITHUB_ENV
+          echo "DATE=$(date +%Y-%m-%d)" >> $GITHUB_ENV
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Login to GitHub Container Registry
@@ -31,4 +35,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: .
           push: true
-          tags: ghcr.io/jgigantino31/swag:latest, ghcr.io/jgigantino31/swag:$(curl -s 'https://api.linuxserver.io/api/v1/images?include_config=false&include_deprecated=false' | jq -r '.data.repositories.linuxserver | .[] | select(.name == "swag") | .version'), ghcr.io/jgigantino31/swag:$(date +%Y-%m-%d)
+          tags: ghcr.io/jgigantino31/swag:latest, ghcr.io/jgigantino31/swag:${{ env.SWAG_VERSION }}, ghcr.io/jgigantino31/swag:${{ env.DATE }}
