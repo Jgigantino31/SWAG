@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Check if base image has been updated
         id: check
-        uses: lucacome/docker-image-update-checker@v2
+        uses: lucacome/docker-image-update-checker@v3
         with:
           base-image: ghcr.io/linuxserver/swag:latest
           image: ghcr.io/jgigantino31/swag:latest
