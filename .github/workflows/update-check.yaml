@@ -13,20 +13,20 @@ jobs:
       actions: write
     steps:
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4.1.0
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Check if base image has been updated
         id: check
-        uses: lucacome/docker-image-update-checker@v3.1.0
+        uses: lucacome/docker-image-update-checker@3233adf42bb1dddf92f18cf024a8e202dbeaa9b3 # v3.1.0
         with:
           base-image: ghcr.io/linuxserver/swag:latest
           image: ghcr.io/jgigantino31/swag:latest
           platforms: linux/amd64,linux/arm64
       - name: Invoke build workflow
-        uses: benc-uk/workflow-dispatch@v1.3.1
+        uses: benc-uk/workflow-dispatch@7a027648b88c2413826b6ddd6c76114894dc5ec4 # v1.3.1
         with:
           workflow: build-packages.yaml
         if: steps.check.outputs.needs-updating == 'true'
@@ -38,4 +38,4 @@ jobs:
       actions: write
     steps:
       - name: Keep scheduled workflow alive
-        uses: liskin/gh-workflow-keepalive@v1.2.1
+        uses: liskin/gh-workflow-keepalive@f72ff1a1336129f29bf0166c0fd0ca6cf1bcb38c # v1.2.1
