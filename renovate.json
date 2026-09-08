@@ -2,8 +2,20 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices",
-    "docker:disable",
-    ":disableRateLimiting",
+    "docker:enableMajor",
     ":semanticCommits"
+  ],
+  "packageRules": [
+    {
+      "description": "Automerge Updates in Dockerfile",
+      "matchManagers": ["dockerfile"],
+      "automerge": true
+    },
+    {
+      "description": "Linuxserver.io Packaging Versioning",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/linuxserver/**"],
+      "versioning": "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)((\\.|-r)(?<build>\\d+))?-ls(?<revision>\\d+)$"
+    }
   ]
 }
