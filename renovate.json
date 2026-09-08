@@ -7,6 +7,7 @@
   ],
   "packageRules": [
     {
+      "description": "Automerge Updates in Dockerfile",
       "matchManagers": ["dockerfile"],
       "automerge": true
     },
