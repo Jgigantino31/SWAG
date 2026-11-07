@@ -12,10 +12,10 @@
       "automerge": true
     },
     {
-      "description": "Linuxserver.io Packaging Versioning",
+      "description": "Linuxserver.io Packaging Versioning (lsXXX as build, no revision)",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/linuxserver/**"],
-      "versioning": "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)((\\.|-r)(?<build>\\d+))?-ls(?<revision>\\d+)$"
-    }
+      "versioning": "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-ls(?<build>\\d+)$"
+    },
   ]
 }
