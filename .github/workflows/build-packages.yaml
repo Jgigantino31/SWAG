@@ -18,12 +18,16 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Set environment variables
-        run: |
-          echo "VERSION=$(curl -s https://api.github.com/repos/linuxserver/docker-swag/releases/latest | jq -r '.tag_name')" >> $GITHUB_ENV
-          echo "DATE=$(date +%Y-%m-%d)" >> $GITHUB_ENV
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Get version
+        run: |
+          VERSION=$(grep -i '^FROM ' Dockerfile | head -n 1 | awk -F':' '{print $2}' | awk -F'@' '{print $1}' | awk '{print $1}')
+          if [ -z "${VERSION}" ]; then
+            echo "::error::Failed to extract VERSION tag from Dockerfile FROM line."
+            exit 1
+          fi
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
       - name: Login to GitHub Container Registry
         uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
         with:
@@ -40,4 +44,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: .
           push: ${{ github.event_name == 'push' }}
-          tags: ghcr.io/jgigantino31/swag:latest, ghcr.io/jgigantino31/swag:${{ env.VERSION }}, ghcr.io/jgigantino31/swag:${{ env.DATE }}
+          tags: ghcr.io/jgigantino31/swag:latest, ghcr.io/jgigantino31/swag:${{ env.VERSION }}
